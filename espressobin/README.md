@@ -118,7 +118,7 @@ will like this:
 ### How mount OverlayFS as rootfs
 
 Normal Linux boot sequence are shown in follow:
-```
+
 1. BOOT ROM copy the bootloader(typically U-boot) from boot device to RAM and
 switch CPU's PC to point to the entry of bootloader
 2. Bootloader is responsable copy the Linux kernel (possible along with .dtb)
@@ -126,7 +126,23 @@ from either on board flash or network NFS to RAM and switch CPU's PC to point
 to the entry of Linux kernel
 3. When Linux kernel start to run, the kernel will mount the rootfs using
 bootargs, and entering user space
-```
+
+We can mount OverlayFS before mount the rootfs, and make the OverlayFS as the
+final rootfs. Or mount a temporary rootfs and mount the OverlayFS then change
+to the new mounted OverlayFS using **chroot** command.
+
+Linux kernel support initrd (init ram disk) in Linux 2.4 and support ramfs
+(ram filesystem) in Linux 2.6, they both a temporary file system to mount as
+rootfs to do some modprob or other jobs. See documentation of Linux kernel,
+[Using the initial RAM disk (initrd)][Using the initial RAM disk (initrd)].
+We can use this feature to mount our OverlayFS and switch root to it.
+
+Switch to a new rootfs require a lot of work, fortunately, the busybox already
+done that for us by calling [switch\_root][switch_root] in busybox.
+
+We use [buildroot][buildroot] to generate our own ramfs, mount and switch to
+OverlayFS. Please refer to [buildroot-ch][buildroot-ch] branch
+[branch\_tag\_2018.11-ch-dev][branch_tag_2018.11-ch-dev] for more detial.
 
 Source code for ESPRESSObin
 ---------------------------
@@ -144,3 +160,11 @@ TODO
 
 [espressobin.net]: http://espressobin.net/ "ESPRESSObin"
 [OverlayFS]: https://github.com/torvalds/linux/blob/master/Documentation/filesystems/overlayfs.txt "OverlayFS"
+
+[Using the initial RAM disk (initrd)]: https://www.kernel.org/doc/html/latest/admin-guide/initrd.html
+
+[switch_root]: https://github.com/mirror/busybox/blob/master/util-linux/switch_root.c
+
+[buildroot]: https://github.com/buildroot/buildroot "Buildroot"
+[buildroot-ch]: https://github.com/chenhaninformation/buildroot
+[branch_tag_2018.11-ch-dev]: https://github.com/chenhaninformation/buildroot/tree/branch_tag_2018.08-ch-dev
