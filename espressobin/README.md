@@ -167,4 +167,4 @@ TODO
 
 [buildroot]: https://github.com/buildroot/buildroot "Buildroot"
 [buildroot-ch]: https://github.com/chenhaninformation/buildroot
-[branch_tag_2018.11-ch-dev]: https://github.com/chenhaninformation/buildroot/tree/branch_tag_2018.08-ch-dev
+[branch_tag_2018.11-ch-dev]: https://github.com/chenhaninformation/buildroot/tree/branch_tag_2018.11-ch-dev
